@@ -18,7 +18,7 @@ contract Ownable {
 
     modifier onlyOwner() {
         require(
-            msg.sender != _owner,
+            msg.sender == _owner,
             "Only owner of contract can call this function."
         );
         _;
@@ -608,17 +608,12 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
     }
 }
 
-contract CustomERC721Token is ERC721Metadata{
-
-    string private constant _TOKEN_BASE_URI = "https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/";
-    string private constant _TOKEN_NAME = "Taruns Token";
-    string private constant _TOKEN_SYMBOL = "TS";
-
-    constructor() ERC721Metadata(_TOKEN_NAME, _TOKEN_SYMBOL,_TOKEN_BASE_URI) internal{
+contract CustomERC721Token is ERC721Metadata("Taruns Token", "TS","https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/"){
+    constructor()  public{
         
     }
 
-    function mint(address to, uint256 tokenId, string memory tokenURI) public onlyOwner returns(bool){
+    function mint(address to, uint256 tokenId) public onlyOwner returns(bool){
         super._mint(to,tokenId);
         super.setTokenURI(tokenId);
         return true;
