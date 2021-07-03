@@ -21,6 +21,7 @@ contract Ownable {
             msg.sender != _owner,
             "Only owner of contract can call this function."
         );
+        _;
     }
 
     function transferOwnership(address newOwner) public onlyOwner {
@@ -62,10 +63,12 @@ contract Pausable is Ownable {
     //Modifiers
     modifier whenNotPaused() {
         require(_paused == false, "Contract is already paused");
+        _;
     }
 
     modifier paused() {
         require(_paused == true, "Contract is not paused");
+        _;
     }
 }
 
@@ -160,7 +163,7 @@ contract ERC721 is Pausable, ERC165 {
 
     function balanceOf(address owner) public view returns (uint256) {
         require(owner != address(0), "Invalid address");
-        return _ownedTokensCount[owner].current();
+        return Counters.current(_ownedTokensCount[owner]);
     }
 
     function ownerOf(uint256 tokenId) public view returns (address) {
@@ -171,7 +174,7 @@ contract ERC721 is Pausable, ERC165 {
     function approve(address to, uint256 tokenId) public {
         // Given address to not be the owner of the tokenId
         require(
-            address != _tokenOwner[tokenId],
+            to != _tokenOwner[tokenId],
             "Target approver address is same as owner."
         );
 
@@ -190,7 +193,7 @@ contract ERC721 is Pausable, ERC165 {
 
     function getApproved(uint256 tokenId) public view returns (address) {
         //Check if token exist in smart conract
-        require(__exists(tokenId), "Token does not exist in system");
+        require(_exists(tokenId), "Token does not exist in system");
 
         //return token approval if it exists
         return _tokenApprovals[tokenId];
@@ -293,7 +296,7 @@ contract ERC721 is Pausable, ERC165 {
 
         // mint tokenId to given address & increase token count of owner
         _tokenOwner[tokenId] = to;
-        _ownedTokensCount[to] = Counters.Counter.increase();
+        Counters.increment(_ownedTokensCount[to]);
 
         // emit Transfer event
         emit Transfer(address(0), to, tokenId);
@@ -319,10 +322,11 @@ contract ERC721 is Pausable, ERC165 {
         _clearApproval(tokenId);
 
         // update token counts & transfer ownership of the token ID
-        _ownedTokensCount[from] = Counters.Counter.decrease();
+        Counters.decrement(_ownedTokensCount[from]);
 
         _tokenOwner[tokenId] = to;
-        _ownedTokensCount[to] = Counters.Counter.increase();
+
+        Counters.increment(_ownedTokensCount[to]);
 
         // emit correct event
         emit Transfer(from, to, tokenId);
@@ -580,15 +584,15 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
         _registerInterface(_INTERFACE_ID_ERC721_METADATA);
     }
 
-    function getTokenName() external view returns (string) {
+    function getTokenName() external view returns (string memory) {
         return _tokenName;
     }
 
-    function getTokenSymbol() external view returns (string) {
+    function getTokenSymbol() external view returns (string memory ) {
         return _tokenSymbol;
     }
 
-    function getBaseTokenURI() external view returns (string) {
+    function getBaseTokenURI() external view returns (string memory) {
         return _baseTokenURI;
     }
 
@@ -599,16 +603,24 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
 
 //Set the tokenURI of a specified tokenId
     function setTokenURI(uint256 tokenId) internal {
-         require(exists(tokenId)"Token does not exist");
+         require(_exists(tokenId),"Token does not exist");
         _tokenURIs[tokenId]  = strConcat(_baseTokenURI,uint2str(tokenId));
     }
 }
 
-//  TODO's: Create CustomERC721Token contract that inherits from the ERC721Metadata contract. You can name this contract as you please
-//  1) Pass in appropriate values for the inherited ERC721Metadata contract
-//      - make the base token uri: https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/
-//  2) create a public mint() that does the following:
-//      -can only be executed by the contract owner
-//      -takes in a 'to' address, tokenId, and tokenURI as parameters
-//      -returns a true boolean upon completion of the function
-//      -calls the superclass mint and setTokenURI functions
+contract CustomERC721Token is ERC721Metadata{
+
+    string private constant _TOKEN_BASE_URI = "https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/";
+    string private constant _TOKEN_NAME = "Taruns Token";
+    string private constant _TOKEN_SYMBOL = "TS";
+
+    constructor() ERC721Metadata(_TOKEN_NAME, _TOKEN_SYMBOL,_TOKEN_BASE_URI) internal{
+        
+    }
+
+    function mint(address to, uint256 tokenId, string memory tokenURI) public onlyOwner returns(bool){
+        super._mint(to,tokenId);
+        super.setTokenURI(tokenId);
+        return true;
+    }
+}
