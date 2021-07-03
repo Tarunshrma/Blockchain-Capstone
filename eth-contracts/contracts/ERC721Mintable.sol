@@ -37,6 +37,10 @@ contract Ownable {
 
         emit ContractOwnerShipChangedTo(_owner);
     }
+
+    function getOwner() external returns(address){
+        return _owner;
+    }
 }
 
 contract Pausable is Ownable {
