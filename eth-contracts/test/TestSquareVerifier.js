@@ -21,7 +21,7 @@ contract('TestSquareVerifier', accounts => {
               proof.proof.a,
               proof.proof.b,
               proof.proof.c,
-              proof.input,
+              proof.inputs,
               {from: account_one}
           );
 
