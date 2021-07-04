@@ -1,48 +1,55 @@
 pragma solidity >=0.4.21 <0.6.0;
 
-// TODO define a contract call to the zokrates generated solidity contract <Verifier> or <renamedVerifier>
+import "./ERC721Mintable.sol";
+import "./verifier.sol";
 
+//interface for verifier contract
+contract CustomVerifier is Verifier{
 
+}
 
-// TODO define another contract named SolnSquareVerifier that inherits from your ERC721Mintable class
+contract SolnSquareVerifier is CustomERC721Token{
 
+    CustomVerifier private verifierContract;
 
+    constructor(address verifierAddress) CustomERC721Token() public{
+        verifierContract = CustomVerifier(verifierAddress);
+    }
 
-// TODO define a solutions struct that can hold an index & an address
+    struct Solutions{
+        uint256 tokenId;
+        address toAddress;
+    }
 
+    Solutions[] private solutions;
+    mapping (bytes32 => Solutions) private uniqueSolutions;
 
+    event SolutionAdded(address to, uint256 tokenId);
 
-// TODO define an array of the above struct
+    function addSolution(address _to, uint256 _tokenId, bytes32 _key) internal {
+        Solutions memory _solution = Solutions({tokenId : _tokenId, toAddress : _to});
+        solutions.push(_solution);
+        uniqueSolutions[_key] = _solution;
+        emit SolutionAdded(_to, _tokenId);
+    }
 
+    function mintToken(
+        address _to,
+        uint256 _tokenId,
+        uint[2] memory a,
+        uint[2][2] memory b,
+        uint[2] memory c,
+        uint[2] memory input
+    ) public {
+        bytes32 key = keccak256(abi.encodePacked(a, b, c, input));
+        require(uniqueSolutions[key].toAddress == address(0), "Solution is already used.");
+        require(verifierContract.verifyTx(a, b, c, input), "Solution verification failed.");
 
-// TODO define a mapping to store unique solutions submitted
+        addSolution(_to, _tokenId, key);
+        super.mint(_to, _tokenId);
+    }
 
-
-
-// TODO Create an event to emit when a solution is added
-
-
-
-// TODO Create a function to add the solutions to the array and emit the event
-
-
-
-// TODO Create a function to mint new NFT only after the solution has been verified
-//  - make sure the solution is unique (has not been used before)
-//  - make sure you handle metadata as well as tokenSuplly
-
-  
-
-
-
-
-
-
-
-
-
-
-
+}
 
 
 
