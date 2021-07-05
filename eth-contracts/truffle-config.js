@@ -18,11 +18,13 @@
  *
  */
 
-const HDWalletProvider = require('truffle-hdwallet-provider');
+const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 const fs = require('fs');
 const secret = fs.readFileSync(".secret").toString().trim();
-const infuraEndPoint = "https://rinkeby.infura.io/v3/61c09fc6abca4a5bbaffb30a18441a02";
+const infuraKey = "<Your Infura Key>";
+
+const infuraEndPoint = `https://rinkeby.infura.io/v3/${infuraKey}`;
 
 module.exports = {
   /**
@@ -48,12 +50,12 @@ module.exports = {
       network_id: "*",       // Any network (default: none)
      },
      rinkeby: {
-         provider: function () {
-           return new HDWalletProvider(secret, infuraEndPoint)
-         },
-      network_id: 4,
-      gas: 4500000,
+      provider: () => new HDWalletProvider(secret, `https://rinkeby.infura.io/v3/${infuraKey}`),
+      network_id: 4,       // rinkeby's id
+      gas: 4500000,        // rinkeby has a lower block limit than mainnet
       gasPrice: 10000000000,
+      networkCheckTimeout: 1000000,
+      timeoutBlocks: 200
     },
     // Another network with more advanced options...
     // advanced: {
