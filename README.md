@@ -6,6 +6,7 @@
 3. [Unit Tests](#unit-test)
 4. [Contract Details](#contract-details)
 5. [Open Sea Storefront](#store-front)
+5. [References](#references)
 
 ### general-info
 
@@ -54,9 +55,9 @@ truffle migrate --network rinkeby --reset
 ```
 Here is the deployed contract address details:
 
-EtherScan : https://rinkeby.etherscan.io/address/0x668E1D6Fd6c1BA2Dc6d7D058AFC4374265775305
-Contract Address : 0x668E1D6Fd6c1BA2Dc6d7D058AFC4374265775305
-Contract ABI
+* EtherScan : https://rinkeby.etherscan.io/address/0x668E1D6Fd6c1BA2Dc6d7D058AFC4374265775305
+* Contract Address : 0x668E1D6Fd6c1BA2Dc6d7D058AFC4374265775305
+* Contract ABI
 ```bash
 [
     {
@@ -729,13 +730,13 @@ The minted tokens are listed on OpenSea storefront, a place to trade NFT tokens
 ![OpenSea Storefront](/assets/store-front.png)
 OpenSea Link or listed Tokens:
 
-[Token 1](https://testnets.opensea.io/assets/0x668E1D6Fd6c1BA2Dc6d7D058AFC4374265775305/1)
-[Token 2](https://testnets.opensea.io/assets/0x668E1D6Fd6c1BA2Dc6d7D058AFC4374265775305/2)
-[Token 3](https://testnets.opensea.io/assets/0x668E1D6Fd6c1BA2Dc6d7D058AFC4374265775305/3)
-[Token 4](https://testnets.opensea.io/assets/0x668E1D6Fd6c1BA2Dc6d7D058AFC4374265775305/4)
-[Token 5](https://testnets.opensea.io/assets/0x668E1D6Fd6c1BA2Dc6d7D058AFC4374265775305/5)
+* https://testnets.opensea.io/assets/0x668E1D6Fd6c1BA2Dc6d7D058AFC4374265775305/1
+* https://testnets.opensea.io/assets/0x668E1D6Fd6c1BA2Dc6d7D058AFC4374265775305/2
+* https://testnets.opensea.io/assets/0x668E1D6Fd6c1BA2Dc6d7D058AFC4374265775305/3
+* https://testnets.opensea.io/assets/0x668E1D6Fd6c1BA2Dc6d7D058AFC4374265775305/4
+* https://testnets.opensea.io/assets/0x668E1D6Fd6c1BA2Dc6d7D058AFC4374265775305/5
 
-
+### references
 * [Remix - Solidity IDE](https://remix.ethereum.org/)
 * [Visual Studio Code](https://code.visualstudio.com/)
 * [Truffle Framework](https://truffleframework.com/)
