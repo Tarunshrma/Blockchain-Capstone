@@ -736,6 +736,12 @@ OpenSea Link or listed Tokens:
 * https://testnets.opensea.io/assets/0x668E1D6Fd6c1BA2Dc6d7D058AFC4374265775305/4
 * https://testnets.opensea.io/assets/0x668E1D6Fd6c1BA2Dc6d7D058AFC4374265775305/5
 
+### token-transaction
+Below is the link for token transaction done by account (0xB79929c390ec479597bcDFbDB983B4c78506a7b6). This user bought 5 tokens, can be seen at Etherscan at below address.
+https://rinkeby.etherscan.io/address/0xb79929c390ec479597bcdfbdb983b4c78506a7b6#tokentxnsErc721
+
+![Token Transaction](/assets/token-transaction.png)
+
 ### references
 * [Remix - Solidity IDE](https://remix.ethereum.org/)
 * [Visual Studio Code](https://code.visualstudio.com/)
