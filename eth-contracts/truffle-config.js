@@ -24,7 +24,6 @@ const fs = require('fs');
 const secret = fs.readFileSync(".secret").toString().trim();
 const infuraKey = "<Your Infura Key>";
 
-const infuraEndPoint = `https://rinkeby.infura.io/v3/${infuraKey}`;
 
 module.exports = {
   /**
